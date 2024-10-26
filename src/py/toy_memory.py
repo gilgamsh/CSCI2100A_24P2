@@ -3,14 +3,18 @@ import sys
 import heapq
 import os
 
+
 class BufferPool:
+
     def __init__(self, B, b):
         self.B = B  # Buffer pool size in words
         self.b = b  # Block size in words
         self.pool = [None] * self.B  # Simulate buffer pool with a list
         self.free_blocks = [True] * (self.B // self.b)  # Block availability
 
+
 class BufferPoolManager:
+
     def __init__(self, buffer_pool):
         self.buffer_pool = buffer_pool
         self.stats = {
@@ -52,11 +56,34 @@ class BufferPoolManager:
         self.stats['deallocations'] += 1
         self.stats['freed_blocks'] += num_blocks
 
+
 class SecStore:
+
     def __init__(self):
-        self.files = {}  # Simulate secondary storage files
+        self.symbols = {}
+
+
+    def read_file(self, file_name):
+        """
+        SecStore is used for the input file inputs.txt, a text file containing
+        floating point numbers to be sorted. 
+        """
+        with open(file_name, 'r') as file:
+            lines = file.readlines()
+            self.symbols[file_name] = lines
+
+    def write_file(self, file_name):
+        """
+        The store is also used for the output file sorted.txt that you output
+        (in CSV format). 
+        """
+        with open(file_name, 'w') as file:
+            for line in self.symbols[file_name]:
+                file.write(line)
+
 
 class SecStoreManager:
+
     def __init__(self, sec_store, buffer_pool, buffer_pool_manager, b, T):
         self.sec_store = sec_store
         self.buffer_pool = buffer_pool
@@ -65,14 +92,14 @@ class SecStoreManager:
         self.T = T
         self.H = 0  # Total overhead
 
-    def read(self, file_name, file_offset, size, buf_address):
+    def read(self, name, start, size, buf_address):
         """Read data from secStore to bufPool."""
-        if file_name not in self.sec_store.files:
-            print(f"File {file_name} does not exist in secStore.")
+        if name not in self.sec_store.symbols:
+            print(f"file/array {name} does not exist in secStore.")
             return False
-        data = self.sec_store.files[file_name][file_offset:file_offset + size]
+        data = self.sec_store.symbols[name][start:start + size]
         if len(data) != size:
-            print(f"Could not read the requested size from {file_name}.")
+            print(f"Could not read the requested size from {name}.")
             return False
         # Copy data to buffer pool
         self.buffer_pool.pool[buf_address:buf_address + size] = data
@@ -81,21 +108,21 @@ class SecStoreManager:
         self.H += blocks_accessed * self.T
         return True
 
-    def write(self, file_name, file_offset, size, buf_address):
+    def write(self, name, start, size, buf_address):
         """Write data from bufPool to secStore."""
         # Get data from buffer pool
         data = self.buffer_pool.pool[buf_address:buf_address + size]
         # Write data to secStore
-        if file_name not in self.sec_store.files:
-            self.sec_store.files[file_name] = []
+        if name not in self.sec_store.files:
+            self.sec_store.symbols[name] = []
         # Ensure the file list is large enough
-        file_data = self.sec_store.files[file_name]
-        if len(file_data) < file_offset:
-            file_data.extend([None] * (file_offset - len(file_data)))
-        if len(file_data) < file_offset + size:
-            file_data.extend([None] * (file_offset + size - len(file_data)))
-        file_data[file_offset:file_offset + size] = data
-        self.sec_store.files[file_name] = file_data
+        data = self.sec_store.symbols[name]
+        if len(data) < start:
+            data.extend([None] * (start - len(data)))
+        if len(data) < start + size:
+            data.extend([None] * (start + size - len(data)))
+        data[start:start + size] = data
+        self.sec_store.symbols[name] = data
         # Update overhead
         blocks_accessed = math.ceil(size / self.b)
         self.H += blocks_accessed * self.T
