@@ -17,6 +17,7 @@ class BufferPoolManager:
 
     def __init__(self, buffer_pool):
         self.buffer_pool = buffer_pool
+        # WARN: useless
         self.stats = {
             'allocations': 0,
             'deallocations': 0,
