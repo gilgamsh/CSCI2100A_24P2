@@ -47,7 +47,7 @@ class BufferPoolManager:
             start_address = start_block * self.buffer_pool.b
             return start_address
         else:
-            return -1  # Not enough space
+            return -1  
 
     def free(self, start_address, num_blocks):
         """Free space in the buffer pool."""
@@ -59,6 +59,9 @@ class BufferPoolManager:
 
 
 class SecStore:
+    """
+    read files from disk and write files to disk
+    """
 
     def __init__(self):
         self.symbols = {}
@@ -70,8 +73,8 @@ class SecStore:
         floating point numbers to be sorted. 
         """
         with open(file_name, 'r') as file:
-            lines = file.readlines()
-            self.symbols[file_name] = lines
+            data = [float(line.strip()) for line in file]
+            self.symbols['input'] = data
 
     def write_file(self, file_name):
         """
@@ -100,8 +103,9 @@ class SecStoreManager:
             return False
         data = self.sec_store.symbols[name][start:start + size]
         if len(data) != size:
-            print(f"Could not read the requested size from {name}.")
-            return False
+            print(f"Not enough data in file/array {name}. Expected {size}, got {len(data)}.")
+            
+        size = len(data)
         # Copy data to buffer pool
         self.buffer_pool.pool[buf_address:buf_address + size] = data
         # Update overhead
@@ -112,9 +116,12 @@ class SecStoreManager:
     def write(self, name, start, size, buf_address):
         """Write data from bufPool to secStore."""
         # Get data from buffer pool
-        data = self.buffer_pool.pool[buf_address:buf_address + size]
+        buffer_data = self.buffer_pool.pool[buf_address:buf_address + size]
+        if len(buffer_data) != size:
+            print(f"Not enough data in buffer pool. Expected {size}, got {len(buffer_data)}.")
+        size = len(buffer_data)
         # Write data to secStore
-        if name not in self.sec_store.files:
+        if name not in self.sec_store.symbols:
             self.sec_store.symbols[name] = []
         # Ensure the file list is large enough
         data = self.sec_store.symbols[name]
@@ -122,7 +129,7 @@ class SecStoreManager:
             data.extend([None] * (start - len(data)))
         if len(data) < start + size:
             data.extend([None] * (start + size - len(data)))
-        data[start:start + size] = data
+        data[start:start + size] = buffer_data
         self.sec_store.symbols[name] = data
         # Update overhead
         blocks_accessed = math.ceil(size / self.b)

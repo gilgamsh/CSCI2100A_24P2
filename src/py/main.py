@@ -2,7 +2,7 @@ import math
 import sys
 import heapq
 import os
-import toy_memory
+from toy_memory import BufferPool, BufferPoolManager, SecStore, SecStoreManager
 
 import random
 
@@ -20,9 +20,7 @@ def external_merge_sort(B, b, N, T, input_file, output_file):
     sec_man = SecStoreManager(sec_store, buffer_pool, buffer_pool_manager, b, T)
 
     # Read input file and store in secStore
-    with open(input_file, 'r') as f:
-        data = [float(line.strip()) for line in f]
-    sec_store.files['input'] = data
+    sec_store.read_file(input_file)
 
     # Determine the number of initial runs
     run_size = B  # Number of words that can be sorted in memory
@@ -89,7 +87,7 @@ def external_merge_sort(B, b, N, T, input_file, output_file):
     output_total = 0
 
     # Open output file in secStore
-    sec_store.files['output'] = []
+    sec_store.symbols['output'] = []
 
     # Main merge loop
     while True:
@@ -152,7 +150,7 @@ def external_merge_sort(B, b, N, T, input_file, output_file):
                     sys.exit(1)
                 buffer_pool.pool[start_address:start_address + size] = output_buffer
                 # Write to secStore
-                if not sec_man.write('output', len(sec_store.files['output']), size, start_address):
+                if not sec_man.write('output', len(sec_store.symbols['output']), size, start_address):
                     print("Failed to write output buffer to secStore.")
                     sys.exit(1)
                 # Free buffer space
@@ -201,7 +199,7 @@ def external_merge_sort(B, b, N, T, input_file, output_file):
             sys.exit(1)
         buffer_pool.pool[start_address:start_address + size] = output_buffer
         # Write to secStore
-        if not sec_man.write('output', len(sec_store.files['output']), size, start_address):
+        if not sec_man.write('output', len(sec_store.symbols['output']), size, start_address):
             print("Failed to write output buffer to secStore.")
             sys.exit(1)
         # Free buffer space
@@ -212,7 +210,7 @@ def external_merge_sort(B, b, N, T, input_file, output_file):
     #############################
 
     # Write sorted data to output file
-    sorted_data = sec_store.files['output']
+    sorted_data = sec_store.symbols['output']
     with open(output_file, 'w') as f:
         for value in sorted_data:
             f.write(f"{value}\n")
@@ -230,8 +228,8 @@ if __name__ == "__main__":
     N = 200000  # Number of records
     T = 64     # Relative time taken for secStore access
 
-    input_file = "inputs.txt"
-    output_file = "sorted.txt"
+    input_file = "/Users/jiaxi/Documents/GitHub/CSCI2100A_24P2/inputs/inputs.txt"
+    output_file = "/Users/jiaxi/Documents/GitHub/CSCI2100A_24P2/outputs/sorted.txt"
 
     # Generate test data if input file does not exist
     if not os.path.exists(input_file):
