@@ -7,14 +7,16 @@ import os
 class BufferPool:
 
     def __init__(self, B, b):
-        self.B = B  # Buffer pool size in words
-        self.b = b  # Block size in words
-        self.pool = [None] * self.B  # Simulate buffer pool with a list
-        self.free_blocks = [True] * (self.B // self.b)  # Block availability
+        # TODO: Implement buffer pool
+        # self.B = B  # Buffer pool size in words
+        # self.b = b  # Block size in words
+        # self.pool = [None] * self.B  # Simulate buffer pool with a list
+        # self.free_blocks = [True] * (self.B // self.b)  # Block availability
+        pass
 
 
 class BufferPoolManager:
-
+    # TODO: Implement buffer pool manager
     def __init__(self, buffer_pool):
         self.buffer_pool = buffer_pool
         # WARN: useless
@@ -27,35 +29,13 @@ class BufferPoolManager:
 
     def allocate(self, num_blocks):
         """Allocate space in the buffer pool."""
-        consecutive_free = 0
-        start_block = -1
-        for i in range(len(self.buffer_pool.free_blocks)):
-            if self.buffer_pool.free_blocks[i]:
-                if consecutive_free == 0:
-                    start_block = i
-                consecutive_free += 1
-                if consecutive_free == num_blocks:
-                    break
-            else:
-                consecutive_free = 0
-                start_block = -1
-        if consecutive_free == num_blocks:
-            for i in range(start_block, start_block + num_blocks):
-                self.buffer_pool.free_blocks[i] = False
-            self.stats['allocations'] += 1
-            self.stats['allocated_blocks'] += num_blocks
-            start_address = start_block * self.buffer_pool.b
-            return start_address
-        else:
-            return -1  
+        # TODO: Implement buffer pool allocation
+        pass
 
     def free(self, start_address, num_blocks):
         """Free space in the buffer pool."""
-        start_block = start_address // self.buffer_pool.b
-        for i in range(start_block, start_block + num_blocks):
-            self.buffer_pool.free_blocks[i] = True
-        self.stats['deallocations'] += 1
-        self.stats['freed_blocks'] += num_blocks
+        # TODO: Implement buffer pool deallocation
+        pass
 
 
 class SecStore:
@@ -72,18 +52,14 @@ class SecStore:
         SecStore is used for the input file inputs.txt, a text file containing
         floating point numbers to be sorted. 
         """
-        with open(file_name, 'r') as file:
-            data = [float(line.strip()) for line in file]
-            self.symbols['input'] = data
+        pass
 
     def write_file(self, file_name):
         """
         The store is also used for the output file sorted.txt that you output
         (in CSV format). 
         """
-        with open(file_name, 'w') as file:
-            for line in self.symbols[file_name]:
-                file.write(line)
+        pass
 
 
 class SecStoreManager:
@@ -98,40 +74,10 @@ class SecStoreManager:
 
     def read(self, name, start, size, buf_address):
         """Read data from secStore to bufPool."""
-        if name not in self.sec_store.symbols:
-            print(f"file/array {name} does not exist in secStore.")
-            return False
-        data = self.sec_store.symbols[name][start:start + size]
-        if len(data) != size:
-            print(f"Not enough data in file/array {name}. Expected {size}, got {len(data)}.")
-            
-        size = len(data)
-        # Copy data to buffer pool
-        self.buffer_pool.pool[buf_address:buf_address + size] = data
-        # Update overhead
-        blocks_accessed = math.ceil(size / self.b)
-        self.H += blocks_accessed * self.T
-        return True
+        # TODO: Implement read operation
+        pass
 
     def write(self, name, start, size, buf_address):
         """Write data from bufPool to secStore."""
-        # Get data from buffer pool
-        buffer_data = self.buffer_pool.pool[buf_address:buf_address + size]
-        if len(buffer_data) != size:
-            print(f"Not enough data in buffer pool. Expected {size}, got {len(buffer_data)}.")
-        size = len(buffer_data)
-        # Write data to secStore
-        if name not in self.sec_store.symbols:
-            self.sec_store.symbols[name] = []
-        # Ensure the file list is large enough
-        data = self.sec_store.symbols[name]
-        if len(data) < start:
-            data.extend([None] * (start - len(data)))
-        if len(data) < start + size:
-            data.extend([None] * (start + size - len(data)))
-        data[start:start + size] = buffer_data
-        self.sec_store.symbols[name] = data
-        # Update overhead
-        blocks_accessed = math.ceil(size / self.b)
-        self.H += blocks_accessed * self.T
-        return True
+        # TODO: Implement write operation
+        pass
