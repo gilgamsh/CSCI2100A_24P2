@@ -42,6 +42,7 @@ if __name__ == "__main__":
     N = 200000  # Number of records
     T = 64     # Relative time taken for secStore access
 
+    # TODO: read from the command line instead of hardcoding
     input_file = "inputs/inputs.txt"
     output_file = "outputs/sorted.txt"
 

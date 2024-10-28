@@ -4,6 +4,15 @@ Project2 Template for CUHK CSCI2100A Fall 2024
 
 This is merely a template. You need to implement four classes related to storage and  an external merge sort algorithm.
 
+In this project, you need to do the following tasks:
+
+1. Emulate the hierarchy of memory storage in a computer system. Namely, the secondary storage and the buffer.
+2. Implement an external merge sort algorithm to sort a large file that cannot be loaded into the buffer at once.
+3. Modify the template to enable it to accept data from the command line.
+
+You may modify the template as necessary, but ensure that your implementation includes the functionalities explicitly required by the template.
+
+If you find anything inappropriate or incorrect, please contact the TA via(1155204966@link.cuhk.edu.hk)
 ## Supported Languages
 
 - Python**3**

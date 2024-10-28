@@ -10,6 +10,7 @@ class BufferPool:
         # TODO: Implement buffer pool
         self.B = B  # Buffer pool size in words
         self.b = b  # Block size in words
+        # TODO: Implement buffer pool
         # Simulate buffer pool with a list
         # Block availability
         

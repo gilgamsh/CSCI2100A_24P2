@@ -4,3 +4,64 @@
 #include <cmath>
 #include <algorithm>
 #include <string>
+
+struct BufferPool {
+    // TODO: Implement Buffer Pool
+    int B; // Buffer pool size in words
+    int b; // Block size in words
+    // Simulate Buffer Pool with a vector
+    // Each block availability.(free or not)
+};
+
+struct BufferPoolManager {
+    //TODO: Implement Buffer Pool Manager
+    BufferPool& buffer_pool;
+
+    BufferPoolManager(BufferPool& buffer_pool) : buffer_pool(buffer_pool) {}
+
+    int allocate(int num_blocks) {
+        // Allocate num_blocks blocks in the buffer pool
+        // Return the starting block number
+        return -1;
+    }
+
+    void free(int start_address, int num_blocks) {
+        // Free num_blocks blocks starting from start_address
+    }
+};
+
+struct SecStore {
+    // TODO: Implement Secondary Storage
+    std::map<std::string, std::vector<double>> symbols;
+
+    void write_file(std::string file_name, std::vector<double> data) {
+        // Write data from the secondary storage to disk
+    }
+     
+    std::vector<double> read_file(std::string file_name) {
+        // Read data from disk to the secondary storage
+        raise std::exception("Function not implemented");
+    }
+
+};
+
+struct SecStoreManager {
+    //TODO: Implement Secondary Storage Manager
+    SecStore& sec_store;
+    BufferPool& buffer_pool;
+    BufferPoolManager& buffer_pool_manager;
+    int b;
+    int T;
+    int H;
+
+    SecStoreManager(SecStore& sec_store, BufferPool& buffer_pool, BufferPoolManager& buffer_pool_manager, int b, int T) : sec_store(sec_store), buffer_pool(buffer_pool), buffer_pool_manager(buffer_pool_manager), b(b), T(T) {}
+
+    bool read(std::string name, int start, int size , int buf_address) {
+        // read data from secondary storage to buffer pool
+    }
+
+    bool write(std::string name, int start, int size, int buf_address) {
+        // write data from buffer pool to secondary storage
+    }
+
+};
