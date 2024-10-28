@@ -8,24 +8,18 @@ class BufferPool:
 
     def __init__(self, B, b):
         # TODO: Implement buffer pool
-        # self.B = B  # Buffer pool size in words
-        # self.b = b  # Block size in words
-        # self.pool = [None] * self.B  # Simulate buffer pool with a list
-        # self.free_blocks = [True] * (self.B // self.b)  # Block availability
-        pass
+        self.B = B  # Buffer pool size in words
+        self.b = b  # Block size in words
+        # Simulate buffer pool with a list
+        # Block availability
+        
 
 
 class BufferPoolManager:
     # TODO: Implement buffer pool manager
     def __init__(self, buffer_pool):
         self.buffer_pool = buffer_pool
-        # WARN: useless
-        self.stats = {
-            'allocations': 0,
-            'deallocations': 0,
-            'allocated_blocks': 0,
-            'freed_blocks': 0
-        }
+        
 
     def allocate(self, num_blocks):
         """Allocate space in the buffer pool."""

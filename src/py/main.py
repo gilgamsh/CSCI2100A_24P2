@@ -32,8 +32,7 @@ def external_merge_sort(B, b, N, T, input_file, output_file):
 
     # Print overhead and statistics
     print(f"Total overhead H: {sec_man.H}")
-    print("Buffer Pool Manager Statistics:")
-    print(buffer_pool_manager.stats)
+    
 
 # Example usage:
 if __name__ == "__main__":

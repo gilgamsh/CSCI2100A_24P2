@@ -1,6 +1,8 @@
-# CSCI2100A_24P1
+# CSCI2100A_24P2
 
-Project Template for CUHK CSCI2100A Fall 2024
+Project2 Template for CUHK CSCI2100A Fall 2024
+
+This is merely a template. You need to implement four classes related to storage and  an external merge sort algorithm.
 
 ## Supported Languages
 
@@ -23,7 +25,32 @@ python3 main.py input_file_name output_file_name
 ### Java
 java main input_file_name output_file_name
 
-**Additionally, your program must be capable of outputting the value of H and statistics from BufferPoolManager, including the number of times called, space freed, and space allocated.**
+**Additionally, your program must be capable of outputting the value of H.**
+**For example**
+```
+H: 11223344.
+``````
+
+## Input/Output Format
+The input.txt will look like
+```
+132.953123097174
+117.889128373386
+73.2517156144283
+15.4582834957958
+135.055718797326
+19.1558502673546
+```
+
+The sorted.txt will look like
+```
+15.4582834957958
+19.1558502673546
+73.2517156144283
+117.889128373386
+132.953123097174
+135.055718797326
+```
 
 
 
