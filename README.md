@@ -8,9 +8,11 @@ In this project, you need to do the following tasks:
 
 1. Emulate the hierarchy of memory storage in a computer system. Namely, the secondary storage and the buffer.
 2. Implement an external merge sort algorithm to sort a large file that cannot be loaded into the buffer at once.
-3. Modify the template to enable it to accept data from the command line.
+3. Modify the template to enable it to accept arguments from the command line.
 
 You may modify the template as necessary, but ensure that your implementation includes the functionalities explicitly required by the template.
+
+**You should write a README to tell TA how to run/compile your codes.**
 
 If you find anything inappropriate or incorrect, please contact the TA via(1155204966@link.cuhk.edu.hk)
 ## Supported Languages
